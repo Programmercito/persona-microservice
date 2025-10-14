@@ -39,9 +39,6 @@ public class Persona {
     @Column(name = "fecha_nacimiento", nullable = false)
     private LocalDateTime fechaNacimiento;
 
-    @Column(nullable = false)
-    private boolean estado = true;
-
     @Column(name = "id_identificacion", nullable = false, length = 100)
     private String idIdentificacion;
 

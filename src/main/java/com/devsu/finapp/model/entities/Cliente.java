@@ -17,4 +17,6 @@ public class Cliente extends Persona {
     @Column(nullable = false, length = 1000)
     private String password;
 
+    @Column(nullable = false)
+    private boolean estado = true;
 }
