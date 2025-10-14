@@ -1,6 +1,7 @@
 package com.devsu.finapp.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,11 @@ public class ClienteController {
 
     public ClienteController(ClienteService clientesService) {
         this.clientesService = clientesService;
+    }
+
+    @GetMapping("/clientes/{id}")
+    public Cliente findById(@PathVariable Long id) {
+        return clientesService.findById(id);
     }
 
     @PostMapping("/clientes")

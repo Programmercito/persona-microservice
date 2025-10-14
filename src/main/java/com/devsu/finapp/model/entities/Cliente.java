@@ -8,6 +8,7 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(name = "clientes")
@@ -18,6 +19,7 @@ public class Cliente extends Persona {
 
     @Column(nullable = true, length = 1000)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ToString.Exclude
     private String password;
 
     @Column(nullable = false)
