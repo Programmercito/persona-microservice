@@ -9,11 +9,11 @@ import com.devsu.finapp.model.entities.Persona;
 import com.devsu.finapp.model.repositories.ClienteRespository;
 
 @Service
-public class PersonasService {
+public class ClienteService {
     ClienteRespository clienteRespository;
     MessageProducer messageProducer;
 
-    public PersonasService(ClienteRespository clienteRespository,
+    public ClienteService(ClienteRespository clienteRespository,
             MessageProducer messageProducer) {
         this.clienteRespository = clienteRespository;
         this.messageProducer = messageProducer;
