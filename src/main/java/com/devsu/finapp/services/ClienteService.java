@@ -27,6 +27,7 @@ public class ClienteService {
         Cliente resul = clienteRespository.save(cliente);
         PersonaMessage message = new PersonaMessage();
         message.setId(resul.getId());
+        message.setTipoCuenta("Ahorros");
         messageProducer.send("create-first-account-queue", message);
         return resul;
     }
