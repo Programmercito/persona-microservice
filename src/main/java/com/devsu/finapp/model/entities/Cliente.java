@@ -1,5 +1,7 @@
 package com.devsu.finapp.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -15,6 +17,8 @@ import lombok.EqualsAndHashCode;
 public class Cliente extends Persona {
 
     @Column(nullable = false, length = 1000)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
     private String password;
 
     @Column(nullable = false)
