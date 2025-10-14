@@ -16,11 +16,10 @@ import lombok.EqualsAndHashCode;
 @PrimaryKeyJoinColumn(name = "id")
 public class Cliente extends Persona {
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = true, length = 1000)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-
     private String password;
 
     @Column(nullable = false)
-    private boolean estado = true;
+    private Boolean estado = true;
 }
