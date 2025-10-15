@@ -9,12 +9,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Entity
-@Table(name = "personas")
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "personas", uniqueConstraints = {
+    @UniqueConstraint(name = "UK_PERSONA_IDENTIFICACION", columnNames = {"id_identificacion", "tipo_identificacion"})
+})
 public class Persona {
 
     @Id
