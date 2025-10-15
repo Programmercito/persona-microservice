@@ -31,8 +31,9 @@ public class ClienteService {
         Cliente resul = clienteRespository.save(cliente);
         PersonaMessage message = new PersonaMessage();
         message.setId(resul.getId());
-        message.setTipoCuenta("Ahorros");
-        messageProducer.send("create-first-account-queue", message);
+        message.setNombres(resul.getNombres());
+        message.setApellidos(resul.getApellidos());
+        messageProducer.send("create-client", message);
         return resul;
     }
 
@@ -66,7 +67,12 @@ public class ClienteService {
         if (clienteDetails.getPassword() != null && !clienteDetails.getPassword().isEmpty()) {
             cliente.setPassword(passwordEncoder.encode(clienteDetails.getPassword()));
         }
-
+        PersonaMessage message = new PersonaMessage();
+        message.setId(cliente.getId());
+        message.setNombres(cliente.getNombres());
+        message.setApellidos(cliente.getApellidos());
+        message.setEstado(cliente.getEstado());
+        messageProducer.send("update-client", message);
         return clienteRespository.save(cliente);
     }
 

@@ -9,5 +9,7 @@ import lombok.ToString;
 @ToString
 public class PersonaMessage implements Serializable {
     private Long id;
-    private String tipoCuenta;
+    private String nombres;
+    private String apellidos;
+    private boolean estado = true;
 }
