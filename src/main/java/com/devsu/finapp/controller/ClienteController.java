@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.devsu.finapp.model.entities.Cliente;
 
 import com.devsu.finapp.services.ClienteService;
 
 @RestController
+@RequestMapping("/clientes")
 public class ClienteController {
     private ClienteService clientesService;
 
@@ -20,23 +22,23 @@ public class ClienteController {
         this.clientesService = clientesService;
     }
 
-    @GetMapping("/clientes/{id}")
+    @GetMapping("/{id}")
     public Cliente findById(@PathVariable Long id) {
         return clientesService.findById(id);
     }
 
-    @PostMapping("/clientes")
+    @PostMapping
     public Cliente create(@RequestBody Cliente cliente) {
         return clientesService.save(cliente);
     }
 
-    @PutMapping("/clientes/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Cliente> update(@PathVariable Long id, @RequestBody Cliente clienteDetails) {
         Cliente updatedCliente = clientesService.update(id, clienteDetails);
         return ResponseEntity.ok(updatedCliente);
     }
 
-    @PatchMapping("/clientes/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Cliente> partialUpdate(@PathVariable Long id, @RequestBody Cliente clienteDetails) {
         Cliente updatedCliente = clientesService.update(id, clienteDetails);
         return ResponseEntity.ok(updatedCliente);
