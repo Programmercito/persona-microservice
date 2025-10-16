@@ -43,7 +43,6 @@ class UsersApplicationTests {
 
 	@Test
 	void updateClientReceivedthesemdClient() {
-		// Arrange: cliente original en base de datos
 		Cliente existingCliente = new Cliente();
 		existingCliente.setId(1L);
 		existingCliente.setNombres("Nombre Antiguo");
@@ -55,31 +54,21 @@ class UsersApplicationTests {
 		existingCliente.setDireccion("Direccion Antigua");
 		existingCliente.setTelefono("999888777");
 		existingCliente.setEstado(true);
-
-		// PATCH: solo campos a modificar
 		Cliente clienteDetails = new Cliente();
 		clienteDetails.setGenero("F");
 		clienteDetails.setTelefono("999888777");
 		clienteDetails.setEstado(false);
-
-		// Mock: repositorio y save
 		when(clienteRepository.findById(1L)).thenReturn(Optional.of(existingCliente));
 		when(clienteRepository.save(any(Cliente.class))).thenAnswer(inv -> inv.getArgument(0));
 
-		// Act: ejecutamos la actualización
-		Cliente updatedCliente = clienteService.update(1L, clienteDetails);
-
-		// Assert: capturamos el cliente guardado
 		ArgumentCaptor<Cliente> clienteCaptor = ArgumentCaptor.forClass(Cliente.class);
 		verify(clienteRepository).save(clienteCaptor.capture());
 		Cliente capturedCliente = clienteCaptor.getValue();
 
-		// Verificamos campos actualizados
 		assertEquals("F", capturedCliente.getGenero());
 		assertEquals("999888777", capturedCliente.getTelefono());
 		assertEquals(false, capturedCliente.getEstado());
 
-		// Verificamos campos preservados
 		assertEquals("Nombre Antiguo", capturedCliente.getNombres());
 		assertEquals("Apellido Antiguo", capturedCliente.getApellidos());
 		assertEquals(LocalDateTime.parse("1990-01-01T00:00:00"), capturedCliente.getFechaNacimiento()); // ✅ FIX
@@ -88,7 +77,6 @@ class UsersApplicationTests {
 		assertEquals("CC", capturedCliente.getTipoIdentificacion());
 		assertEquals("Direccion Antigua", capturedCliente.getDireccion());
 
-		// Verificamos que se envió el mensaje
 		verify(messageProducer).send(any(String.class), any(PersonaMessage.class));
 	}
 
