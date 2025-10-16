@@ -23,7 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-class UsersApplicationTests {
+class ClientTest {
 
 	@Mock
 	private ClienteRespository clienteRepository;
