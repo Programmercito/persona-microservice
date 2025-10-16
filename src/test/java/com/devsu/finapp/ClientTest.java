@@ -42,24 +42,29 @@ class ClientTest {
 	}
 
 	@Test
-	void updateClientReceivedthesemdClient() {
+	void whenUpdateCliente_thenFieldsAreUpdatedCorrectly() {
+		
 		Cliente existingCliente = new Cliente();
 		existingCliente.setId(1L);
 		existingCliente.setNombres("Nombre Antiguo");
 		existingCliente.setApellidos("Apellido Antiguo");
 		existingCliente.setGenero("F");
-		existingCliente.setFechaNacimiento(LocalDateTime.parse("1990-01-01T00:00:00"));
+		existingCliente.setFechaNacimiento(LocalDateTime.of(1990, 1, 1, 0, 0));
 		existingCliente.setIdIdentificacion("12345678");
 		existingCliente.setTipoIdentificacion("CC");
 		existingCliente.setDireccion("Direccion Antigua");
 		existingCliente.setTelefono("999888777");
 		existingCliente.setEstado(true);
+
 		Cliente clienteDetails = new Cliente();
 		clienteDetails.setGenero("F");
 		clienteDetails.setTelefono("999888777");
 		clienteDetails.setEstado(false);
+
 		when(clienteRepository.findById(1L)).thenReturn(Optional.of(existingCliente));
 		when(clienteRepository.save(any(Cliente.class))).thenAnswer(inv -> inv.getArgument(0));
+
+		clienteService.update(1L, clienteDetails);
 
 		ArgumentCaptor<Cliente> clienteCaptor = ArgumentCaptor.forClass(Cliente.class);
 		verify(clienteRepository).save(clienteCaptor.capture());
@@ -71,8 +76,7 @@ class ClientTest {
 
 		assertEquals("Nombre Antiguo", capturedCliente.getNombres());
 		assertEquals("Apellido Antiguo", capturedCliente.getApellidos());
-		assertEquals(LocalDateTime.parse("1990-01-01T00:00:00"), capturedCliente.getFechaNacimiento()); // ✅ FIX
-																										// aplicado
+		assertEquals(LocalDateTime.of(1990, 1, 1, 0, 0), capturedCliente.getFechaNacimiento());
 		assertEquals("12345678", capturedCliente.getIdIdentificacion());
 		assertEquals("CC", capturedCliente.getTipoIdentificacion());
 		assertEquals("Direccion Antigua", capturedCliente.getDireccion());
