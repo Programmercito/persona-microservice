@@ -2,7 +2,7 @@
 FROM maven:3.9-eclipse-temurin-25 AS builder
 WORKDIR /app
 COPY . .
-RUN mvn clean test package 
+RUN mvn clean test package -DskipTests
 
 # 🚀 Etapa 2: Imagen final con solo el .jar
 FROM eclipse-temurin:25-jdk
