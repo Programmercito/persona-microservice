@@ -54,7 +54,7 @@ services:
       - "3308:3306"
 
   activemq:
-    image: apache/activemq-artemis:latest
+    image: apache/activemq-artemis:latest-alpine
     environment:
       ARTEMIS_USERNAME: artemis
       ARTEMIS_PASSWORD: artemis
