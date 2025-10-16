@@ -1,6 +1,7 @@
 package com.devsu.finapp.common.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,8 +17,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Deshabilitamos CSRF para APIs REST
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**").permitAll() // Permitimos acceso a los clientes bajo el context-path
-                        .anyRequest().authenticated()); // Requerimos autenticación para cualquier otra ruta
+                        .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // Permite acceso a todos los endpoints de Actuator
+                        .requestMatchers("**").permitAll() // Permite acceso a tu API de clientes
+                        .anyRequest().authenticated()); // Requiere autenticación para cualquier otra ruta
         return http.build();
     }
 

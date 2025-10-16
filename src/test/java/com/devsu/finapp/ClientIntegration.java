@@ -43,7 +43,7 @@ public class ClientIntegration {
         newCliente.setPassword("supersecret");
 
         // 2. Acción (Act) y 3. Verificación (Assert)
-        mockMvc.perform(post("/api/clientes")
+        mockMvc.perform(post("/api/identidad/clientes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newCliente)))
                 .andExpect(status().isOk()) // O isCreated() dependiendo de tu controller

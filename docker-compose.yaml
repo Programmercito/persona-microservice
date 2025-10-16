@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  identidad:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: identidad-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://personas-db:3306/personas
+      - ACTIVEMQ_HOST=activemq
+    depends_on:
+      - personas-db
+      - activemq
+
+  finanzas:
+    build:
+      context: ./../cuentas-microservice
+      dockerfile: Dockerfile
+    image: finanzas-app
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://cuentas-db:3306/cuentas
+      - ACTIVEMQ_URL=tcp://activemq:61616
+    depends_on:
+      - cuentas-db
+      - activemq
+
+  personas-db:
+    image: mariadb:latest
+    environment:
+      MARIADB_DATABASE: personas
+      MARIADB_USER: usuario
+      MARIADB_PASSWORD: clave
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - personas_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  cuentas-db:
+    image: mariadb:latest
+    environment:
+      MARIADB_DATABASE: cuentas
+      MARIADB_USER: usuario
+      MARIADB_PASSWORD: clave
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - cuentas_data:/var/lib/mysql
+    ports:
+      - "3308:3306"
+
+  activemq:
+    image: apache/activemq-artemis:latest
+    environment:
+      ARTEMIS_USERNAME: artemis
+      ARTEMIS_PASSWORD: artemis
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - identidad
+      - finanzas
+
+volumes:
+  personas_data:
+  cuentas_data:
