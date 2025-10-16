@@ -1,5 +1,8 @@
 package com.devsu.finapp.services;
 
+import java.util.concurrent.CompletableFuture;
+
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.devsu.finapp.common.exceptions.ResourceNotFoundException;
@@ -29,11 +32,8 @@ public class ClienteService {
     public Cliente save(Cliente cliente) {
         cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
         Cliente resul = clienteRespository.save(cliente);
-        PersonaMessage message = new PersonaMessage();
-        message.setId(resul.getId());
-        message.setNombres(resul.getNombres());
-        message.setApellidos(resul.getApellidos());
-        messageProducer.send("create-client", message);
+        // Enviar mensaje de forma asíncrona
+        sendCreationMessage(resul);
         return resul;
     }
 
@@ -67,13 +67,27 @@ public class ClienteService {
         if (clienteDetails.getPassword() != null && !clienteDetails.getPassword().isEmpty()) {
             cliente.setPassword(passwordEncoder.encode(clienteDetails.getPassword()));
         }
+        Cliente updatedCliente = clienteRespository.save(cliente);
+        // Enviar mensaje de forma asíncrona
+        sendUpdateMessage(updatedCliente);
+        return updatedCliente;
+    }
+
+    @Async
+    public void sendCreationMessage(Cliente cliente) {
         PersonaMessage message = new PersonaMessage();
         message.setId(cliente.getId());
         message.setNombres(cliente.getNombres());
         message.setApellidos(cliente.getApellidos());
+        messageProducer.send("create-client", message);
+    }
+
+    @Async
+    public void sendUpdateMessage(Cliente cliente) {
+        PersonaMessage message = new PersonaMessage();
+        message.setId(cliente.getId());
         message.setEstado(cliente.getEstado());
         messageProducer.send("update-client", message);
-        return clienteRespository.save(cliente);
     }
 
 }

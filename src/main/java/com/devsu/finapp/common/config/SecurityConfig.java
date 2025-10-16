@@ -16,8 +16,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Deshabilitamos CSRF para APIs REST
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/clientes/**").permitAll() // Permitimos acceso a /clientes
-                        .requestMatchers("/api/clientes/**").permitAll() // Actualizamos la regla para que coincida con el nuevo context-path
+                        .requestMatchers("/api/**").permitAll() // Permitimos acceso a los clientes bajo el context-path
                         .anyRequest().authenticated()); // Requerimos autenticación para cualquier otra ruta
         return http.build();
     }
