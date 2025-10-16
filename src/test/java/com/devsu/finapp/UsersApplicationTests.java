@@ -42,7 +42,7 @@ class UsersApplicationTests {
 	}
 
 	@Test
-	void whenUpdateCliente_shouldReturnUpdatedCliente() {
+	void updateClientReceivedthesemdClient() {
 		// Arrange: cliente original en base de datos
 		Cliente existingCliente = new Cliente();
 		existingCliente.setId(1L);
