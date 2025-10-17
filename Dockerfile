@@ -8,4 +8,4 @@ RUN mvn clean test package -DskipTests
 FROM eclipse-temurin:25-jdk
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar","-Dspring.artemis.host=$ACTIVEMQ_HOST","-Dspring.datasource.url=$SPRING_DATASOURCE_URL"]
+ENTRYPOINT ["/bin/sh", "-c", "java -Dspring.datasource.url=$SPRING_DATASOURCE_URL -Dspring.artemis.broker-url=$ACTIVEMQ_HOST -jar app.jar"]

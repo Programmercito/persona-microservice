@@ -9,8 +9,9 @@ services:
     ports:
       - "8080:8080"
     environment:
+      - ACTIVEMQ_HOST=tcp://activemq:61616
       - SPRING_DATASOURCE_URL=jdbc:mariadb://personas-db:3306/personas
-      - ACTIVEMQ_HOST=activemq
+
     depends_on:
       - personas-db
       - activemq
@@ -23,8 +24,8 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mariadb://cuentas-db:3306/cuentas
-      - ACTIVEMQ_HOST=activemq
+      - ACTIVEMQ_HOST=tcp://activemq:61616
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://personas-db:3306/personas
     depends_on:
       - cuentas-db
       - activemq
