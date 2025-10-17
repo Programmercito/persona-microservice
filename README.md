@@ -57,6 +57,17 @@ Si prefieres no usar Docker, puedes compilar y ejecutar cada microservicio manua
     ```
 
 2.  **Compilar los proyectos**:
+    Para levantar en local se debe tener Mariadb y Activemq Artemis levantados y en sus puertos por defecto, se puede utilizar docker :
+    Windows:
+    docker run -d --name mariadb-osbo -e MARIADB_ROOT_PASSWORD=root -v c:/opt/osbo:/var/lib/mysql -p 3306:3306 mariadb:latest
+    Linux:
+    docker run -d --name mariadb-osbo -e MARIADB_ROOT_PASSWORD=root -v /opt/osbo:/var/lib/mysql -p 3306:3306 mariadb:latest
+
+    ActiveMQ Artemis:
+    docker run --detach --name artemis-broker -p 61616:61616 -p 8161:8161  -e ARTEMIS_USERNAME=artemis -e ARTEMIS_PASSWORD=artemis --rm apache/activemq-artemis:latest-alpine
+
+    Crear la bases de datos : personas y cuentas
+
     Navega al directorio raíz de cada proyecto y compila usando Maven.
 
     ```bash
@@ -68,6 +79,11 @@ Si prefieres no usar Docker, puedes compilar y ejecutar cada microservicio manua
     cd ../cuentas-microservice
     mvn clean install
     ```
+    Para ejecutar ambos microservicios:
+
+    mvn spring-boot:run
+
+    persona-microservicio se ejecutara en el puerto 8080 y cuentas en 8081
 
 3.  **Ejecutar los microservicios**:
     Una vez compilados, puedes ejecutar cada aplicación. Deberás configurar las variables de entorno para la conexión a la base de datos y ActiveMQ manualmente.
